@@ -1,3 +1,5 @@
+![](opentelemetry.png)
+
 # setting up clickhouse cluster
 
 * create namespace
