@@ -1,0 +1,38 @@
+apiVersion: "clickhouse.altinity.com/v1"
+kind: "ClickHouseInstallation"
+metadata:
+  name: "clickhousecl"
+  namespace: clickhouse
+spec:
+  configuration:
+    users:
+      prabhat/networks/ip: "::/0"
+      prabhat/password_sha256_hex: e8e3da929326b8635ab4051842e30327be566e4f2e4b14b0a076e2805e2416a1
+      prabhat/profile: default
+    zookeeper:
+        nodes:
+        - host: zookeeper
+          port: 2181
+    clusters:
+      - name: "clickhousecl"
+        layout:
+          shardsCount: 1
+          replicasCount: 1
+        templates:
+          podTemplate: clickhouse-stable
+          volumeClaimTemplate: storage-vc-template
+  templates:
+    podTemplates:
+      - name: clickhouse-stable
+        spec:
+          containers:
+          - name: clickhouse
+            image: altinity/clickhouse-server:21.8.10.1.altinitystable
+    volumeClaimTemplates:
+      - name: storage-vc-template
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 30Gi
